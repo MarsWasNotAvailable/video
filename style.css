@@ -1,0 +1,609 @@
+* {
+    font-family: "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    padding: 0;
+    margin: 0;
+    /* box-sizing: border-box; */
+    /* box-sizing: content-box; */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    /* background-image: url('./images/body-bg1.png'); */
+    background-color: #f0f0f0;
+}
+
+
+header {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+}
+
+header #Blazon {
+    /* height: 100%; */
+    /* width: 10%; */
+    margin-top: 1em;
+    border-radius: 2em 4em;
+    width: 100%;
+}
+
+header #HomeLink {
+    height: 1em;
+    width: 6em;
+    display: inline-block;
+}
+
+@media (max-width:900px) {
+    header #Blazon {
+        scale: 2;
+    }
+}
+
+header nav {
+    margin-top: 1em;
+    margin-bottom: 2em;
+}
+
+/* The navbar icons: hamburger and research */
+.fa-bars::before, .fa-navicon::before, .fa-magnifying-glass::before, .fa-search::before {
+    color: white;
+}
+
+/* This is the images on top of the nav bar */
+header #SiteHead {
+    display: inline-flex;
+    text-align: center;
+    align-items: center;
+}
+
+header #SiteHead > a {
+    width: 100%;
+}
+
+
+@media (max-width:900px) {
+    header #SiteHead > a {
+        scale: 1.25;
+
+        /* reduce it's size to give the login button some pressability on mobile view */
+        width: 50%;
+        margin: auto;
+    }
+}
+
+@media (max-width:600px) {
+    header #SiteHead > a {
+        scale: 1.5;
+    }
+}
+
+header .ConnexionButtons {
+    border-radius: 0;
+    padding: 0.5em;
+    margin-left: 1em;
+    margin-right: 1em;
+    /* background-color: transparent; */
+    border: 1px solid #000;
+
+    cursor: pointer;
+}
+
+/* header .ConnexionButtons:hover {
+    background-color: #1d6eabb9;
+} */
+
+footer div {
+    display: block;
+    padding-left: 20%;
+    padding-right: 20%;
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+}
+
+footer div:first-child {
+    background-color: #000;
+    color: #ebe9ea;
+    line-height: 2em;
+}
+
+footer div:last-child {
+    background-color: grey;
+    text-align: center;
+}
+
+
+/* Presentation canvas */
+
+main article {
+    background-color: white;
+}
+
+.wide-chunks {
+    background-color: #fff;
+    margin: 5% 10%;
+}
+
+.chunks {
+    width: 60%;
+
+    margin-top: 2em;
+    margin-left: auto;
+    margin-bottom: 2em;
+    margin-right: auto;
+
+    padding: 2em;
+}
+
+@media (max-width:900px) {
+    .chunks {
+        width: 80%;
+    }
+}
+
+section.container {
+    display: flex;
+    flex-direction: column;
+}
+
+section.container * {
+    margin-bottom: 1em;
+}
+
+article section h2, article section h4 {
+    color: #d66d40;
+}
+
+@media (max-width: 900px) {
+    article {
+        width: 75%;
+    }
+}
+
+
+/* Comments section */
+
+#CommentaireForm {
+    display: inline-grid;
+}
+
+/* rename to primary button, because it's not green anymore */
+#CommentaireForm button, .green-button {
+    border: 1px solid black;
+    background-color: #f46dab;
+    color: white;
+    cursor: pointer;
+    
+    padding: 0.4em;
+}
+
+#CommentaireForm button {
+    width: 15em;
+    
+}
+
+.red-button {
+    border: 1px solid black;
+    background-color: #1d6eabb9;
+    color: white;
+    cursor: pointer;
+
+    padding: 0.4em;
+}
+
+.red-button:hover {
+    background-color: #D66D40;
+}
+
+
+/* Cartes: utilisé par index, gestion */
+
+.card-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 1% 0 ;
+}
+
+.card-image-container {
+    text-align: center;
+    align-self: center;
+}
+
+.card {
+    display: grid;
+    justify-items: center;
+    width: 29%;
+    background-color: #fff;
+    margin-left: 3.5%;
+    margin-bottom: 3%;
+}
+
+.card-image {
+    width: 100%;
+}
+
+.card-text {
+    padding: 4%;
+    height: 15em;
+    overflow: hidden;
+}
+
+.card-title {
+    color: #000;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+@media (max-width: 900px) {
+    .card-container {
+        display: grid;
+        justify-items: center;
+    }
+
+    .card {
+        width: 97%;
+        margin: 3% 0;
+    }
+}
+
+/* Card : Gestion specific */
+
+form.card.gestion button, form.card.gestion a {
+    display: block;
+    cursor: pointer;
+
+    border: 1px solid #000;
+    padding: 1em;
+
+    background-color: transparent;
+}
+
+form.card.gestion button.floating {
+    background-image: url('./images/icons_cross_deletion.png');
+    background-size: cover;
+    width: 2em;
+    height: 2em;
+    
+    border-radius: 16px;
+
+    float: right;
+
+    /* using a fixed position would allow for the height of the button to be ignored
+     * but then the positioning would be off, when resizing the page
+     * setting a negative margin-top kinda fix the issue
+     */
+    position: relative;
+    left: 50%;
+    top: 100%;
+
+    margin: -1.8em 0 0 0;
+    border: 0;
+}
+
+@media (max-width: 900px) {
+    form.card.gestion button.floating {
+        margin: -1.8em 1.5em 0 0;
+    }
+}
+
+/* form.card-gestion button:last-of-type { */
+form.card.gestion a {
+    background-color: transparent;
+
+    text-decoration: none;
+}
+
+form.card.gestion img {
+    width: 100%;
+}
+
+
+section.card-container #AddNewIcon {
+    width: 50%;
+    border: 1px solid #000;
+    border-radius: 4em;
+}
+
+form.card.gestion .card-text {
+    height: 100%;
+    /* width: 100%; */
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form.card.gestion .card-text * {
+    margin-bottom: 0.5em;
+}
+
+form.card.gestion button, form.card.gestion a {
+    width: 8em;
+}
+
+
+/* Edition */
+
+.article-editor {
+    padding: 0.5em;
+    border: 2px dashed #000;
+}
+
+form.article-editor textarea {
+    resize: vertical;
+    width: 100%;
+    /* height: 100%;  */
+    box-sizing: border-box;
+    display: flex;
+}
+
+*[contenteditable="true"] {
+    padding: 1em;
+    outline: none;
+    border: 2px dashed transparent;
+
+}
+
+*[contenteditable="true"]:hover {
+    padding: 1em;
+    border: 2px dashed #d66d40;
+}
+
+*[contenteditable="true"]:focus {
+    border: 2px dashed #d66d40;
+    outline-color: #d66d40;
+}
+
+button.article-editor-button {
+    display: block;
+    width: 25%;
+    position: relative;
+    bottom: 90%;
+    left: 105%;
+    float: right;
+}
+
+button.update-edit {
+    display: block;
+
+    background-color: transparent;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+
+
+/* Presentation des articles et cartes: contact, categorie, index, recherche, secton */
+
+.titre {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 34px;
+    margin-bottom: 1.5%;
+}
+
+.entete {
+    padding: 0 3.5%;
+}
+
+.entete h2 {
+    /* color:#D66D40; */
+    color: #fe9f86;
+    font-size: 28px;
+    margin-bottom: 1.5%;
+}
+
+.presentation {
+    margin-bottom: 1.6%;
+}
+
+.date {
+    color: #6B6B6B;
+    font-size: 13px;
+    margin-top: 1%;
+}
+
+.resume {
+    line-height: 1.5;
+    font-size: 15px;
+    margin-top: 5%;
+}
+
+.searched {
+    color:#D66D40;
+    font-size: 28px;
+    margin-bottom: 1.5%;
+    margin-left: 3.5%;
+}
+
+.display-result {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 1% 0 ;
+}
+
+@media (max-width: 900px) {
+
+    .titre {
+        font-size: 28px;
+    }
+
+    .entete h2 {
+        font-size: 24px;
+    }
+
+    .presentation, .resume {
+        font-size: 13px;
+        margin-bottom: 10%;
+    }
+
+    .presentation {
+        line-height: 2em;
+    }
+
+    .searched {
+        font-size: 24px;
+    }
+
+    .display-result {
+        display: grid;
+        justify-items: center;
+    }
+}
+
+
+/* le style du formulaire de contact */
+.contact-form, .input-field {
+    display: grid;
+}
+
+.contact-form input {
+    width: 30%;
+    height: 3em;
+    border: solid 1px #D9D9D9;
+    margin:1% 0 1.5%;
+}
+
+.contact-form textarea {
+    border: solid 1px #D9D9D9;
+    margin:1% 0 1.5%;
+}
+
+.submit {
+    width: 25%;
+    border: solid 1px #ffff;
+    margin: 1% 0;
+}
+
+@media (max-width: 900px) {
+
+    .contact-form input, .submit{
+        width: 60%;
+    }
+}
+
+
+
+/* Signin page */
+
+.login-box {
+    max-width: 400px;
+    width: 100%;
+    margin: auto auto 0 auto;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    scale: 0.8;
+    /* transform: scale(0.8); */
+
+    /* Pour inclure le padding et le bord dans la taille totale */
+    box-sizing: border-box; 
+}
+
+.login-box form {
+    /* login and signup form have different numbers of fields */
+    min-height: 20em;
+}
+
+.login-box > * {
+    margin-left: 7%;
+    margin-right: 7%;
+}
+
+.login-box .logo {
+    width: 90%;
+    margin: auto;
+}
+
+.login-box h1 {
+    color: #1c69a5;
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.login-box .input-group {
+    margin-bottom: 15px;
+}
+
+.login-box .input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.login-box .input-group input, .login-box .input-group button {
+    width: 94%;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.login-box .input-group *[type="submit"] {
+    width: 100%;
+    /* border: none; */
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+}
+
+.login-box .input-group *[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.login-box .social-login {
+    margin-top: 2em;
+}
+
+.login-box .social-login a {
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+/* Profile */
+
+section.profile #Control {
+    justify-items: center;
+    display: grid;
+}
+
+section.profile .control {
+    /* width: 8em; */
+    padding: 1em;
+
+    display: inline-flex;
+    margin-bottom: 1em;
+    justify-content: center;
+}
+
+.profile-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-box > * {
+    width: 80%;
+}
+
+.back-button {
+    border: 1px solid #000;
+    /* padding: 1em; */
+    text-decoration: none;
+}
+
+/* .entete.profile {
+    margin-bottom: 2em;
+} */
+
+@media (max-width: 900px) {
+
+    .entete.profile {
+        margin: 1em auto 2em auto;
+        display: inline-grid;
+    }
+}
