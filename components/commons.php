@@ -74,4 +74,6 @@
         array_map('unlink', glob("$Source/*"));
         rmdir($Source);
     }
+
+    $DatabaseName = "video";
 ?>

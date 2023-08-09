@@ -51,6 +51,26 @@
             }
         }
 
+        public function select_recent_videos()
+        {
+            // $SQLQueryString = 'SELECT * FROM `users` WHERE (`mail` = "superuser@local" AND `password` = "pass")';
+            // $SQLQueryString = "SELECT $Column FROM $Table WHERE 1";
+            try {
+                // NOTE: we cannot wrap Column in `` because it could be a regex like '*'
+                // $SQLQueryString = "SELECT `$Column` FROM `$Table` WHERE $ConditionField";
+                $SQLQueryString = "SELECT * FROM `video`.`videos` ORDER BY `date` LIMIT 9";
+
+                $Result = $this->Connection->query($SQLQueryString);
+
+                return $Result->fetchAll(PDO::FETCH_ASSOC);
+
+            } catch (PDOException $e) {
+                echo "Erreur: " . $e->getMessage();
+
+                return false;
+            }
+        }
+
         /** Original select was having a entry point at the WHERE clause
          * I think below can give us more control on the condition field
          * ConditionField expects a multidimentional array containing an operations and a pair of operands
