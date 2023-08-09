@@ -44,20 +44,16 @@
             <!-- <?php
                 // <p class="resume">' . $Each['resume'] . '</p>
 
-
-
                 $AllVisibleArticles = $NewConnection->select_recent_videos();
                 foreach($AllVisibleArticles as $Each)
                 {    
                     echo
                     '<div class="card">
                         <div>
-
                             <canvas id="' . $Each['id_video'] . '" class="card-image" >Thumbnail</canvas>
                         </div>
                         <div class= "card-text">
                             <a href="video.php?id_video=' . $Each['id_video'] . '" class="card-title"><h3>' . $Each['titre'] . '</h3></a>
-                            <p class="date">' . $Each['date'] . '</p>
                         </div>
                     </div>';
                 }
@@ -67,27 +63,42 @@
 
     <script defer>
 
-        var VideoSource = document.createElement("source"); 
-        VideoSource.type = "video/mp4";
-        VideoSource.src = './videos/lorem.mp4';
+        function CreateCardForVideo(VideoId)
+        {
+            let VideoSource = document.createElement('source'); 
+            VideoSource.type = 'video/mp4';
+            VideoSource.src = './videos/lorem.mp4';
 
-        let VideoInterface = document.createElement("video");
-        VideoInterface.onloadeddata = (event) => {
-            let canvas = document.createElement("canvas");
+            let VideoInterface = document.createElement('video');
+            VideoInterface.onloadeddata = (event) => {
 
-            canvas.width = 1280;
-            canvas.height = 720;
+                let NewAnchor = document.createElement('a');
+                NewAnchor.href = 'video.php?id_video=' + VideoId;
+                NewAnchor.className += "card-title";
 
-            canvas.getContext("2d").drawImage(event.target, 0, 0, canvas.width, canvas.height);
+                let canvas = document.createElement('canvas');
+                canvas.width = 426;
+                canvas.height = 240;
+                canvas.getContext("2d").drawImage(event.target, 0, 0, canvas.width, canvas.height);
 
-            document.querySelector('.card-container').appendChild(canvas);
+                let NewTitle = document.createElement('h4');
+                NewTitle.innerHTML = "Title goes here";
 
-            console.log('yay');
-        };
+                NewAnchor.appendChild(canvas);
+                NewAnchor.appendChild(NewTitle);
 
-        VideoInterface.appendChild(VideoSource);
+                let Card = NewAnchor;
 
+                document.querySelector('.card-container').appendChild(Card);
 
+                // console.log(canvas.toDataURL('image/jpeg'));
+                // can pass above to a img element src if you care enough
+            };
+
+            VideoInterface.appendChild(VideoSource);
+        }
+
+        CreateCardForVideo(1);
 
 
 
