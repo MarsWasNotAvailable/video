@@ -1,7 +1,6 @@
 <?php
     require_once("./components/commons.php");
     require_once("./components/connexion.php");
-    $NewConnection = new MaConnexion("viaje", "root", "", "localhost");
 
     if (session_id() == "")
     {
@@ -168,39 +167,6 @@
     .float-login {
         float: right;        
     }
-
-    
-/* Styles des éléments de la navbar */
-.parallax {
-    /* display: inline-block; */
-    /* padding: 0 20px; */
-    cursor: pointer;
-    /* color: #FFD700; Couleur du texte par défaut */
-}
-
-/* Animation des éléments de la navbar lors du clic */
-.parallax.clicked {
-    animation: whirl-shrink-and-grow 2s linear infinite, text-fade 2s linear infinite; /* Animation au clic */
-}
-
-/* Animation d'effet de tourbillon et de rétrécissement/agrandissement */
-@keyframes whirl-shrink-and-grow {
-    0% { transform: rotate(0deg) scale(1); }
-    25% { transform: rotate(90deg) scale(0.3); }
-    50% { transform: rotate(180deg) scale(0.2); }
-    75% { transform: rotate(270deg) scale(0.3); }
-    100% { transform: rotate(360deg) scale(1); }
-}
-
-/* Animation de changement de couleur */
-@keyframes text-fade {
-    0%, 100% { color: #FFD700; }
-    25% { color: #FFA500; }
-    50% { color: #FF8C00; }
-    75% { color: #FF4500; }    
-}
-
-
 </style>
 
 <nav class="navbar">
@@ -267,57 +233,4 @@
             x.className = "topnav";
         }
     }
-
-    // Fonction d'animation de l'effet gyroscopique sur l'image de fond
-    // function animateBackground() {
-    //     const body = document.body;
-    //     body.style.animation = "gyroscopic-effect 2s linear"; // Animation d'effet gyroscopique pour l'image de fond
-    //     setTimeout(() => {
-    //         body.style.animation = "none"; // Réinitialise l'animation après 2 secondes (ajuste cette valeur selon ton préférence)
-    //     }, 2000);
-    // }
-
-    // Ajout d'un gestionnaire d'événement au clic pour chaque élément de la navbar
-/*     constElements = document.querySelectorAll(".parallax");
-    Elements.forEach((element) => {
-        element.addEventListener("click", function (event) {
-            event.preventDefault();
-            this.classList.add("clicked"); // Ajoute la classe "clicked" au clic sur un élément de la navbar
-            animateBackground(); // Déclenche l'effet gyroscopique au clic sur un élément de la navbar
-            setTimeout(() => {
-                this.classList.remove("clicked"); // Retire la classe "clicked" après l'animation
-                window.location = event.target.href;
-            }, 2000);
-        });
-    }); */
-
 </script> 
-
-<?php    
-/* TODO: Can you auto generate those section based on the categorie table
-* I dont like the multiple selects
-* UD: well, it will require a change on the database about categories and sub categories
-    because we want to list unique continent at top level, and countries as sub level
-* I tried: GROUP BY, didn't work
-*/
-
-    // $AllCategories = $NewConnection->select("categorie", "*", '(`nom` <> "Brouillon" AND `nom` <> "Pratique")');
-    
-    // foreach ($AllCategories as $Each) {
-    //     $HasDropDownContent = !($Each['continent'] == '' || $Each['continent'] == 'NA' || $Each['continent'] == 'Pratique');
-
-    //     echo '<div class="dropdown">';
-    //     if ($HasDropDownContent)
-    //     {
-    //         echo '<a href="#">' . $Each['continent'] . '</a>';
-    //         echo '<div class="dropdown-content">';
-    //         echo '<a href="categorie.php?id_categorie='. $Each['id_categorie'] . '">' .$Each['nom'] . '</a>';
-    //         echo '</div>';
-    //     }
-    //     else
-    //     {
-    //         echo '<a href="categorie.php?id_categorie='. $Each['id_categorie'] . '">' .$Each['nom'] . '</a>';
-    //     }
-    //     echo '</div>';
-    // }
-?>
