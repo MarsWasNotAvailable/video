@@ -11,7 +11,7 @@ function CreateCardForVideo(Metadata)
 
         let NewAnchor = document.createElement('a');
         NewAnchor.href = 'video.php?id_video=' + Metadata.VideoId;
-        NewAnchor.className += "card-title";
+        NewAnchor.className += "card-title card";
 
         let canvas = document.createElement('canvas');
         canvas.width = 426;

@@ -29,6 +29,8 @@
         var quill = new Quill('.editor', {
             theme: 'snow'
         });
+
+        // there's another project that caught my eye: https://github.com/basecamp/trix
     </script>
 </body>
 </html>

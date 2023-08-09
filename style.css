@@ -125,7 +125,7 @@ main article {
 }
 
 .chunks {
-    width: 60%;
+    width: 80%;
 
     margin-top: 2em;
     margin-left: auto;
@@ -200,7 +200,7 @@ article section h2, article section h4 {
 
 .card-container {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     flex-wrap: wrap;
     padding: 1% 0 ;
 }
@@ -230,7 +230,7 @@ article section h2, article section h4 {
 }
 
 .card-title {
-    color: #000;
+    /* color: #000; */
     font-size: 20px;
     text-decoration: none;
 }
@@ -605,5 +605,23 @@ section.profile .control {
     .entete.profile {
         margin: 1em auto 2em auto;
         display: inline-grid;
+    }
+}
+
+
+.video-box {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.description-box {
+    display: inline-block;
+    width: 30%;
+}
+@media (max-width: 900px) {
+
+    .description-box {
+        width: 100%;
     }
 }

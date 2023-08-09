@@ -79,7 +79,7 @@
         {
             try {
                 // $ConditionField = array(
-                //     array("=" => array("id_article" => "1")),
+                //     array("=" => array("id_video" => "1")),
                 //     array("<>" => array("sous_categorie" => "not_that_one")),
                 //     array("LIKE" => array("content" => "%keyword%"))
                 // );
@@ -132,8 +132,8 @@
         {
             try {
                 $SQLQueryString = "SELECT *
-                FROM `article`
-                INNER JOIN `categorie` ON `article`.`categorie` = `categorie`.`id_categorie`
+                FROM `videos`
+                INNER JOIN `categorie` ON `videos`.`categorie` = `categorie`.`id_categorie`
                 WHERE $Condition ;
                 ";
 
@@ -154,9 +154,9 @@
         {
             try {
                 $SQLQueryString = "SELECT *
-                FROM `article`
-                INNER JOIN `categorie` ON `article`.`categorie` = `categorie`.`id_categorie`
-                WHERE `article`.`id_article` = '$ArticleID' ;
+                FROM `videos`
+                INNER JOIN `categorie` ON `videos`.`categorie` = `categorie`.`id_categorie`
+                WHERE `videos`.`id_video` = '$ArticleID' ;
                 ";
 
                 // var_dump($SQLQueryString);
@@ -177,10 +177,10 @@
         public function select_article($ConditionField)
         {
             try {
-                $SQLQueryString = "SELECT `article`.`id_article`,`article`.`categorie`,`article`.`sous_categorie`, `article`.`date`, `article`.`titre`, `article`.`resume`, `article`.`photo_principale`, `categorie`.`nom`
-                FROM `article`
-                INNER JOIN `categorie` ON `categorie`.`id_categorie` = `article`.`categorie`
-                WHERE `article`.`categorie` = $ConditionField ;
+                $SQLQueryString = "SELECT `videos`.`id_video`,`videos`.`categorie`,`videos`.`sous_categorie`, `videos`.`date`, `videos`.`titre`, `videos`.`resume`, `videos`.`photo_principale`, `categorie`.`nom`
+                FROM `videos`
+                INNER JOIN `categorie` ON `categorie`.`id_categorie` = `videos`.`categorie`
+                WHERE `videos`.`categorie` = $ConditionField ;
                 ";
 
 
@@ -201,11 +201,11 @@
         public function select_comments($ConditionField)
         {
             try {
-                $SQLQueryString = "SELECT `commentaire`.`id_commentaire`, `commentaire`.`date`, `commentaire`.`contenu`, `utilisateur`.`nom`
+                $SQLQueryString = "SELECT `commentaire`.`id_commentaire`, `commentaire`.`date`, `commentaire`.`contenu`, `users`.`name`
                 FROM `commentaire`
-                INNER JOIN `article` ON `article`.`id_article` = `commentaire`.`id_article`
-                INNER JOIN `utilisateur` ON `utilisateur`.`id_utilisateur` = `commentaire`.`id_utilisateur`
-                WHERE `commentaire`.`id_article` = $ConditionField ;
+                INNER JOIN `videos` ON `videos`.`id_video` = `commentaire`.`fk_video`
+                INNER JOIN `users` ON `users`.`id_user` = `commentaire`.`fk_user`
+                WHERE `commentaire`.`fk_video` = $ConditionField ;
                 ";
 
                 // var_dump($SQLQueryString);
@@ -273,7 +273,7 @@
                 $ValueAsString = rtrim($ValueAsString, ', ');
 
                 /* $SQLQueryString = "INSERT IGNORE INTO $Table (<?>) VALUES (<!>)"; */
-                $SQLQueryString = "INSERT INTO $Table (<?>) VALUES (<!>) ON DUPLICATE KEY UPDATE `id_utilisateur` = LAST_INSERT_ID(`id_utilisateur`), `$UpdateKey` = '$UpdateValue'";
+                $SQLQueryString = "INSERT INTO $Table (<?>) VALUES (<!>) ON DUPLICATE KEY UPDATE `id_user` = LAST_INSERT_ID(`id_user`), `$UpdateKey` = '$UpdateValue'";
                 $SQLQueryString = str_replace("<!>", $ValueAsString, str_replace("<?>", $KeyAsString, $SQLQueryString));
 
                 var_dump($SQLQueryString);
@@ -332,7 +332,7 @@
         public function delete($Table, $ConditionField)
         {
             try {
-                //DELETE FROM `utilisateur` WHERE `utilisateur`.`idUser` = 36
+                //DELETE FROM `user` WHERE `user`.`idUser` = 36
                 // $SQLQueryString = "DELETE FROM `$Table` WHERE `$Table`.`idUser` = 36";
                 $SQLQueryString = "DELETE FROM `$Table` WHERE <?>";
 

@@ -14,9 +14,7 @@
 
     <link rel="stylesheet" href="style.css">
 
-    <!-- <script defer src="./components/thumbnail.js" type="module"></script> -->
     <script type="text/javascript" src="./components/thumbnail.js"></script>
-
 </head>
 
 <body>
@@ -30,9 +28,8 @@
         </section> 
     </main>
 
-    <!-- <script defer src="./components/thumbnail.js" type="module"> -->
     <script defer >
-        // $Each['resume'] , $Each['id_video'], $Each['titre']
+        // $Each['resume']
         <?php
             $AllVisibleArticles = $NewConnection->select_recent_videos();
             foreach($AllVisibleArticles as $Each):
@@ -55,6 +52,5 @@
     <footer>
         <?php include_once './components/footer.php' ?>
     </footer>
-
 </body>
 </html>
