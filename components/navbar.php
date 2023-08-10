@@ -9,6 +9,7 @@
 
     $IsUserLoggedIn = isset($_SESSION['CurrentUser']);
     $CanEditArticles = (isset($_SESSION['UserRole']) && CanEditArticles($_SESSION['UserRole']));
+
 ?>
 
 <!-- Because this link element is set as rel stylesheet, it is body-ok
@@ -200,12 +201,18 @@
                 <?php if ($IsUserLoggedIn): $UserIcon = './images/icons_user_role_' . $_SESSION['UserRole'] . '.png';
                     ?>
                     <form method="POST" action="controller.php"><input type="submit" name="Intention" value="Logout" class="ConnexionButtons red-button" ></form>
-                    <a href="./profile.php"><img src=<?php echo '"' . $UserIcon . '"'; ?> alt="User Role Image" style="width: 32px; height: 32px;"></a>
+                    <a href="./profile.php?profile=<?php echo $_SESSION['UserID']; ?>"><img src=<?php echo '"' . $UserIcon . '"'; ?> alt="User Role Image" style="width: 32px; height: 32px;"></a>
                 <?php else: ?>
                     <button class="ConnexionButtons green-button" onclick="window.location='./login.php'">Login</button>
                 <?php endif ?>
             </div>
         </div>
+
+        <?php if ($CurrentPageName): ?>
+            <div class="dropdown">
+                <h2><?php echo $CurrentPageName; ?></h2>
+            </div>
+        <?php endif; ?>
 
         <!-- <a href="javascript:void(0);" class="icon" onclick="burgerMenu()">
             <i class="fa fa-bars"></i>

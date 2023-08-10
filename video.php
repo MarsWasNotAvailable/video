@@ -30,13 +30,15 @@
 
     $SelectedArticle = $SelectedArticle[0];
 
+    $CurrentPageName = 'Videos';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video: <?php echo $SelectedArticle['titre'] ; ?>
+    <title>Video: <?php echo $CurrentPageName; ?></title>
     </title>
     <link rel="icon" href="./images/favicon.ico" type="image/x-icon" >
 
@@ -58,7 +60,7 @@
             </video>
 
             <?php if ($IsLoggedIn): ?>
-                <section>
+                <section class="editor-box">
                     <div class="editor">
                         <p>Write your description here</p>
                     </div>
@@ -124,7 +126,7 @@
                     echo '<input type="hidden" name="id_article" value="' . $CurrentArticleID . '">';
                 ?>
 
-                <input type="text" name="nom" required placeholder="Insérer votre nom ici"
+                <input type="text" name="name" required placeholder="Insérer votre nom ici"
                     <?php
                         if (isset($_SESSION['CurrentUserName']))
                         {

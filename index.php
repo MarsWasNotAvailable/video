@@ -3,13 +3,15 @@
     require_once('./components/commons.php');
 
     $NewConnection = new MaConnexion($DatabaseName, "root", "", "localhost");
+
+    $CurrentPageName = 'Trending';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video: Welcome</title>
+    <title>Video: <?php echo $CurrentPageName; ?></title>
     <link rel="icon" href="./images/favicon.ico" type="image/x-icon" >
 
     <link rel="stylesheet" href="style.css">
@@ -19,13 +21,13 @@
 
 <body>
     <header>
-        <?php include_once './components/navbar.php' ?>
+        <?php include_once './components/navbar.php'; ?>
     </header>
 
     <main>
         <!-- Cette section contiendra tout les articles -->
         <section class="card-container">
-        </section> 
+        </section>
     </main>
 
     <script defer >

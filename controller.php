@@ -13,12 +13,13 @@
         include("./components/connexion.php");
         include("./components/commons.php");
         // $DatabaseName = "viaje";
-        $UsersTableName = "utilisateur";
+        $UsersTableName = "users";
         $CommentsTableName = "commentaire";
-        $ArticleTableName = "article";
+        $ArticleTableName = "video";
         $Redirection = "index.php";
         $ArticlePageRedirection = './video.php';
         $NotAllowedRedirection = './index.php';
+        $RedirectionAfterLogin = './profile.php';
 
         $NewConnection = new MaConnexion($DatabaseName, "root", "", "localhost");
 
@@ -33,7 +34,7 @@
 
                     $Values = array(
                         'email' => $_POST['email'],
-                        'nom' => $_POST['nom'],
+                        'name' => $_POST['name'],
                         'mot_de_passe' => $HashedPassword,
                         'role' => 'guest'
                     );
@@ -73,9 +74,9 @@
                     if ($UniqueUser /* && password_verify($_POST['mot_de_passe'], $UniqueUser[0]['mot_de_passe']) */) {
 
                         $_SESSION['CurrentUser'] = $UniqueUser[0]['email'];
-                        $_SESSION['CurrentUserName'] = $UniqueUser[0]['nom'];
+                        $_SESSION['CurrentUserName'] = $UniqueUser[0]['name'];
                         $_SESSION['UserRole'] = $UniqueUser[0]['role'];
-                        $_SESSION['UserID'] = $UniqueUser[0]['id_utilisateur'];
+                        $_SESSION['UserID'] = $UniqueUser[0]['id_user'];
 
                         // if (isset($_SESSION['HasFailedSignedUp']))
                         //     unset($_SESSION['HasFailedSignedUp']);
@@ -83,7 +84,7 @@
                         // if (isset($_SESSION['HasFailedLogin']))
                         //     unset($_SESSION['HasFailedLogin']);
 
-                        header("Location: " . 'index.php');
+                        header('Location: ' . $RedirectionAfterLogin . '?profile=' . $_SESSION['UserID']);
                         die();
                     }
                     else {
@@ -110,42 +111,29 @@
 
                     break;
 
-                case 'AddArticle':
-                    $Condition = '(`nom` = "Brouillon")';
-                    $CategoryID = $NewConnection->select('categorie', "id_categorie", $Condition);
-                    $CategoryID = $CategoryID ? $CategoryID[0]['id_categorie'] : '1';
-                    // var_dump($CategoryID);
-
-                    $ArticleID = $NewConnection->insert( 'article', array(
+                case 'CreateVideo':
+                    session_start();
+                    /*
+                        INSERT INTO `videos` (`id_video`, `fk_user`, `titre`, `date`, `path`, `resume`) VALUES
+                        (1, 3, 'rapture', '2023-08-09', 'lorem_life.mp4', 'come...'),
+                    */
+                    $VideoID = $NewConnection->insert( 'videos', array(
+                        'fk_user' => $_SESSION['UserID'],
                         'titre' => 'Sans titre',
-                        'date' => '2000-01-01',
-                        'photo_principale' => '',
-                        'resume' => 'Ajouter un résumé ici.',
-        
-                        'sous_titre_1' => 'Ajouter un premier sous titre ici',
-                        'contenu_1' => 'Ajouter un premier paragraphe ici',
-                        'photo_1' => '',
-        
-                        'sous_titre_2' => 'Ajouter un deuxieme sous titre ici',
-                        'contenu_2' => 'Ajouter un deuxieme paragraphe ici',
-                        'photo_2' => '',
-        
-                        'sous_titre_3' => 'Ajouter un troisieme sous titre ici',
-                        'contenu_3' => 'Ajouter un troisieme paragraphe ici',
-                        'photo_3' => '',
-                        'categorie' => $CategoryID,
-                        'sous_categorie' => 'brouillon'
+                        'resume' => 'Ajouter un résumé ici.'
                     ));
+                    
+                    var_dump($VideoID);
             
-                    if ($ArticleID)
+                    if ($VideoID)
                     {
-                        header("Location: " . "./video.php?edit=true&id_video=$ArticleID");
+                        header("Location: " . "./video.php?edit=true&id_video=$VideoID");
                         die();
                     }
 
                     break;
 
-                case 'DeleteArticle':
+                case 'DeleteVideo':
                     $UpdateFieldCondition = array('id_video' => $_POST['id_video']);
 
                     $Success = $NewConnection->delete($ArticleTableName, $UpdateFieldCondition);
@@ -162,19 +150,19 @@
                     // var_dump($_POST);
 
                     $Values = array(
-                        'nom' => $_POST['nom'],
+                        'name' => $_POST['name'],
                         'email' => $_POST['email'],
                         'mot_de_passe' => bin2hex(openssl_random_pseudo_bytes(4)),
                         'role' => 'guest'
                     );
 
-                    $UserID = $NewConnection->insert_update($UsersTableName, $Values, array('Key' => 'nom', 'Value' => $Values['nom']));
+                    $UserID = $NewConnection->insert_update($UsersTableName, $Values, array('Key' => 'name', 'Value' => $Values['name']));
                     // var_dump($UserID);
 
                     $Comments = array(
                         'contenu' => $_POST['contenu'],
                         'id_video' => $_POST['id_video'],
-                        'id_utilisateur' => $UserID
+                        'id_user' => $UserID
                     );
 
                     // var_dump($Comments);
@@ -320,10 +308,10 @@
                 case 'UpdateProfile':
                     $Values = array(
                         // 'email' => $_POST['email'],
-                        'nom' => $_POST['nom']
+                        'name' => $_POST['name']
                     );
 
-                    $Condition = array('id_utilisateur' => $_POST['id_utilisateur']);
+                    $Condition = array('id_user' => $_POST['id_user']);
 
                     $Success = $NewConnection->update($UsersTableName, $Condition, $Values);
 
@@ -332,7 +320,7 @@
                         session_start();
 
                         // $_SESSION['CurrentUser'] = $_POST['email'];
-                        $_SESSION['CurrentUserName'] = $_POST['nom'];
+                        $_SESSION['CurrentUserName'] = $_POST['name'];
 
                         header("Location: " . './profile.php');
                         die();

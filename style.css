@@ -253,10 +253,20 @@ form.card.gestion button, form.card.gestion a {
     display: block;
     cursor: pointer;
 
-    border: 1px solid #000;
+    /* border: 1px solid #000; */
     padding: 1em;
 
     background-color: transparent;
+
+    /* width: 8em; */
+    width: 70%;
+}
+
+
+/* form.card-gestion button:last-of-type { */
+form.card.gestion a {
+    background-color: transparent;
+    text-decoration: none;
 }
 
 form.card.gestion button.floating {
@@ -287,12 +297,7 @@ form.card.gestion button.floating {
     }
 }
 
-/* form.card-gestion button:last-of-type { */
-form.card.gestion a {
-    background-color: transparent;
 
-    text-decoration: none;
-}
 
 form.card.gestion img {
     width: 100%;
@@ -319,9 +324,6 @@ form.card.gestion .card-text * {
     margin-bottom: 0.5em;
 }
 
-form.card.gestion button, form.card.gestion a {
-    width: 8em;
-}
 
 
 /* Edition */
@@ -624,4 +626,29 @@ section.profile .control {
     .description-box {
         width: 100%;
     }
+}
+
+.editor-box {
+    width: 60%;
+    height: 100%;
+}
+
+@media (max-width: 900px) {
+    .editor-box {
+        width: 100%;
+    }
+}
+
+
+.one-or-two-part {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.one-or-two-part > section {
+    margin: 0;
+}
+
+.card canvas {
+    width: 100%;
 }

@@ -11,6 +11,8 @@
 
     // $HaveKeywords = $MotsRecherche != '';
     $HaveKeywords = !empty($MotsRecherche);
+
+    $CurrentPageName = "Recherche";
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +20,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video: Recherche</title>
+    <title>Video - <?php echo $CurrentPageName; ?></title>
     <link rel="icon" href="./images/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="style.css">
@@ -41,7 +43,7 @@
 
             <script defer >
                 <?php
-                    $ArticlesCorrespondants = $NewConnection->select("videos", "*", "`titre` LIKE '%$MotsRecherche%' OR `resume` LIKE '%$MotsRecherche%'");
+                    $ArticlesCorrespondants = $NewConnection->select("videos", "*", "`titre` LIKE '%$MotsRecherche%' OR `resume` LIKE '%$MotsRecherche%' OR `path` LIKE '%$MotsRecherche%'");
                     foreach($ArticlesCorrespondants as $Each):
                     $Parameters = '{
                         VideoId : ' . $Each['id_video'] . ',
