@@ -236,7 +236,12 @@
 
                     break;
 
-                case 'UploadImage':
+                case 'UploadVideo':
+
+                    var_dump($_POST);
+                    var_dump($_FILES);
+
+                    break;
                 case 'UpdateArticleField':
 
                     //'id_video' => $_POST['id_video']

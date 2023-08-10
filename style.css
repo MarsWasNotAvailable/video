@@ -652,3 +652,8 @@ section.profile .control {
 .card canvas {
     width: 100%;
 }
+
+
+.editor-video-box > * {
+    display: block;
+}

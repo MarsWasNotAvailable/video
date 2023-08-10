@@ -53,11 +53,20 @@
 
     <main>
         <article class="chunks video-box">
-            <video id="vid" width="320" height="240" id="video" controls>
-                <source src="./videos/<?php echo $SelectedArticle['path']; ?>" type=video/mp4>
-                <source src="./videos/404.mp4" type=video/mp4>
-                Your browser does not support the video tag.
-            </video>
+            <section class="editor-video-box">
+                <?php if (true): ?>
+                    <form action="controller.php" method="post" enctype="multipart/form-data" >
+                        <label for="">Selectionner une video:</label>
+                        <input type="file" name="video" class="video-selector" accept="video/mp4">
+                        <input type="hidden" name="Intention" value="UploadVideo">
+                    </form>
+                <?php endif; ?>
+                <video id="vid" width="320" height="240" id="video" controls>
+                    <source src="./videos/<?php echo $SelectedArticle['path']; ?>" type=video/mp4>
+                    <source src="./videos/404.mp4" type=video/mp4>
+                    Your browser does not support the video tag.
+                </video>
+            </section>
 
             <?php if ($IsLoggedIn): ?>
                 <section class="editor-box">
@@ -158,6 +167,79 @@
         {
             return Number( <?php echo $CurrentArticleID; ?> );
         }
+
+        /* Updating the video */
+        [...document.getElementsByClassName('video-selector')].forEach(Each => {
+            Each.addEventListener('change', (Event) => {
+
+                let url = "./controller.php";
+
+                // console.log(Event.target.parentNode);
+
+                Event.target.parentNode.submit();
+
+                // // let form_data = new FormData();
+                // // form_data.append('Intention', 'UpdateArticleField');
+                // // form_data.append('id_video', GetCurrentArticleID());
+                // // form_data.append('Column', Each.getAttribute('name'));
+
+                // // UploadVideo;
+                // let UpdateVideo = document.createElement('form');
+                // UpdateVideo.setAttribute("method", 'POST');
+                // UpdateVideo.setAttribute("action", url);
+
+                // let UploadData = {
+                //     'Intention' : 'UploadVideo',
+                //     'id_video' : '',
+                //     'path' : ''
+                // };
+                // Object.keys(UploadData).forEach((Each)=>{
+                //     var NewInputField = document.createElement("input");
+                //     NewInputField.setAttribute('type', 'hidden');
+                //     NewInputField.setAttribute('name', Each);
+                //     NewInputField.setAttribute('value', UploadData[Each]);
+                //     UpdateVideo.appendChild(NewInputField);
+                // })
+
+                // document.body.appendChild(UpdateVideo);
+                // // UpdateVideo.submit();
+
+
+                // let Section = Event.target.parentNode;
+
+                // let src = URL.createObjectURL(Event.target.files[0]);
+                // let VideoPreviewPlaceholder = Section.getElementsByTagName('video');
+                // if (VideoPreviewPlaceholder)
+                // {
+                //     let VideoSource = document.createElement('source'); 
+                //     VideoSource.type = 'video/mp4';
+                //     VideoSource.src = './videos/' + src;
+
+                //     let VideoInterface = document.createElement('video');
+                //     VideoInterface.appendChild(VideoSource);
+
+                //     console.log(VideoPreviewPlaceholder[0]);
+                //     VideoPreviewPlaceholder[0].parentNode.appendChild(VideoInterface);
+                //     VideoPreviewPlaceholder[0].remove();
+
+
+                //     // [...VideoPreviewPlaceholder[0].getElementsByTagName('source')].forEach(
+                //     //     (Each)=>{
+                //     //         Each.remove();
+                //     // });
+
+                //     // // below fails to load.
+                //     // // VideoPreviewPlaceholder[0].getElementsByTagName('source')[0].remove();
+                //     // VideoPreviewPlaceholder[0].appendChild(VideoSource);
+                //     // // VideoPreviewPlaceholder[0].src = VideoSource.src;
+                //     // VideoPreviewPlaceholder[0].load();
+
+                //     // console.log(VideoPreviewPlaceholder);
+                //     // console.log(VideoSource);
+                //     // // VideoPreviewPlaceholder[0].src = src;
+                // }
+            });
+        });
 
         /** Updating the description :
          * The point is to hook all those elements to be able to send genericly their data to databases
