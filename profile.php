@@ -97,7 +97,7 @@
             $Parameters = '{
                 IsEditable : true,
                 VideoId : ' . $Each['id_video'] . ',
-                Path : "' . $Each['path'] . '",
+                Path : "' . ($Each['path'] ? $Each['path'] : '404.mp4') . '",
                 Titre : "' . $Each['titre'] . '"
             }';
         ?>

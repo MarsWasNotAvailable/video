@@ -1,12 +1,5 @@
 <?php
     session_start();
-    // var_dump($_SESSION);
-
-    // if (!isset($_SESSION['crsf_token']))
-    // {
-    //     header("Location: " . 'login.php');
-    //     die();
-    // }
 
     require_once("./components/commons.php");
     require_once("./components/connexion.php");
@@ -55,10 +48,11 @@
         <article class="chunks video-box">
             <section class="editor-video-box">
                 <?php if (true): ?>
-                    <form action="controller.php" method="post" enctype="multipart/form-data" >
-                        <label for="">Selectionner une video:</label>
+                    <form id="FormForVideoUpload" action="controller.php" method="post" enctype="multipart/form-data" >
+                        <label for="">Remplacer la video ?</label>
                         <input type="file" name="video" class="video-selector" accept="video/mp4">
                         <input type="hidden" name="Intention" value="UploadVideo">
+                        <input type="hidden" name="id_video" value="<?php echo $CurrentArticleID; ?>">
                     </form>
                 <?php endif; ?>
                 <video id="vid" width="320" height="240" id="video" controls>
@@ -66,12 +60,27 @@
                     <source src="./videos/404.mp4" type=video/mp4>
                     Your browser does not support the video tag.
                 </video>
+
+                <fieldset>
+                    <legend>Details de publication:</legend>
+                    <div>
+                        <label for="is_visible">Visible To Other Users</label>
+                        <input class="editable-ajax" type="checkbox" id="is_visible" name="is_visible" <?php echo ($SelectedArticle['is_visible']) ? 'checked' : ''; ?> />
+                    </div>
+
+                    <div>
+                        <label for="titre">Titre</label>
+                        <input class="editable-ajax" type="text" id="titre" name="titre" value="<?php echo ($SelectedArticle['titre']); ?>" readonly />
+                    </div>
+                </fieldset>
             </section>
 
             <?php if ($IsLoggedIn): ?>
                 <section class="editor-box">
+
+
                     <div class="editor">
-                        <p>Write your description here</p>
+                        <p><?php echo $SelectedArticle['resume']; ?></p>
                     </div>
 
                     <script src="./components/quill.js"></script>
@@ -80,9 +89,49 @@
                             theme: 'snow'
                         });
 
-                        // let about = JSON.stringify(quill.getContents());
-                        // console.log(about);
-                        // console.log(quill.getContents());
+                        quill.on('selection-change', function(range, oldRange, source) {
+                            console.log('range is ', range);
+                            if (range) {
+                                // https://quilljs.com/docs/api/#selection-change
+                                // focus
+                            } else {
+                                // blur
+                                // let about = JSON.stringify(quill.getContents());
+                                // let about = quill.getContents();
+                                // console.log(about);
+                                // console.log(quill.getContents().ops[0].insert);
+                                // console.log(quill.root.innerHTML);
+
+                                let url = "./controller.php";
+
+                                let form_data = new FormData();
+                                form_data.append('Intention', 'UpdateVideoDescription');
+                                form_data.append('id_video', <?php echo $CurrentArticleID; ?>);
+                                form_data.append('resume', quill.root.innerHTML);
+
+                                const Request = fetch(url, {
+                                    method: "POST",
+                                    mode: "cors",
+                                    cache: "no-cache",
+                                    credentials: "same-origin",
+                                    // It doesnt work with Content-Type, the WebBrowser will assess the content-type
+                                    // headers: { 'Content-Type': 'multipart/form-data' },
+                                    redirect: "follow",
+                                    referrerPolicy: "no-referrer",
+                                    body: form_data
+                                })
+                                .then(function (Response) { 
+                                    return Response.text();
+                                })
+                                // .then(function (ResponseText) {
+                                //     console.log(ResponseText);
+                                // })
+                                ;
+                            }
+                        });
+
+
+
                     </script>
                 </section>
             <?php else: ?>
@@ -108,7 +157,7 @@
                     // TODO: we're going to use Quill here as well (class=".editor")
                     
                     // echo '<form action="controller.php" method="post" class="article-editor">';
-                    // echo '<input type="hidden" name="id_article" value="' . $CurrentArticleID . '">';
+                    // echo '<input type="hidden" name="id_video" value="' . $CurrentArticleID . '">';
                     // echo '<input type="hidden" name="id_commentaire" value="' . $Value['id_commentaire'] . '">';
                     // echo '</form>';
 
@@ -132,7 +181,7 @@
             <form id="CommentaireForm" action="controller.php" method="POST" >
                 <h3>Laisser un commentaire</h3>
                 <?php
-                    echo '<input type="hidden" name="id_article" value="' . $CurrentArticleID . '">';
+                    echo '<input type="hidden" name="id_video" value="' . $CurrentArticleID . '">';
                 ?>
 
                 <input type="text" name="name" required placeholder="Insérer votre nom ici"
@@ -169,144 +218,32 @@
         }
 
         /* Updating the video */
+        // This could be inlined in the HTML
         [...document.getElementsByClassName('video-selector')].forEach(Each => {
             Each.addEventListener('change', (Event) => {
-
-                let url = "./controller.php";
-
-                // console.log(Event.target.parentNode);
-
                 Event.target.parentNode.submit();
-
-                // // let form_data = new FormData();
-                // // form_data.append('Intention', 'UpdateArticleField');
-                // // form_data.append('id_video', GetCurrentArticleID());
-                // // form_data.append('Column', Each.getAttribute('name'));
-
-                // // UploadVideo;
-                // let UpdateVideo = document.createElement('form');
-                // UpdateVideo.setAttribute("method", 'POST');
-                // UpdateVideo.setAttribute("action", url);
-
-                // let UploadData = {
-                //     'Intention' : 'UploadVideo',
-                //     'id_video' : '',
-                //     'path' : ''
-                // };
-                // Object.keys(UploadData).forEach((Each)=>{
-                //     var NewInputField = document.createElement("input");
-                //     NewInputField.setAttribute('type', 'hidden');
-                //     NewInputField.setAttribute('name', Each);
-                //     NewInputField.setAttribute('value', UploadData[Each]);
-                //     UpdateVideo.appendChild(NewInputField);
-                // })
-
-                // document.body.appendChild(UpdateVideo);
-                // // UpdateVideo.submit();
-
-
-                // let Section = Event.target.parentNode;
-
-                // let src = URL.createObjectURL(Event.target.files[0]);
-                // let VideoPreviewPlaceholder = Section.getElementsByTagName('video');
-                // if (VideoPreviewPlaceholder)
-                // {
-                //     let VideoSource = document.createElement('source'); 
-                //     VideoSource.type = 'video/mp4';
-                //     VideoSource.src = './videos/' + src;
-
-                //     let VideoInterface = document.createElement('video');
-                //     VideoInterface.appendChild(VideoSource);
-
-                //     console.log(VideoPreviewPlaceholder[0]);
-                //     VideoPreviewPlaceholder[0].parentNode.appendChild(VideoInterface);
-                //     VideoPreviewPlaceholder[0].remove();
-
-
-                //     // [...VideoPreviewPlaceholder[0].getElementsByTagName('source')].forEach(
-                //     //     (Each)=>{
-                //     //         Each.remove();
-                //     // });
-
-                //     // // below fails to load.
-                //     // // VideoPreviewPlaceholder[0].getElementsByTagName('source')[0].remove();
-                //     // VideoPreviewPlaceholder[0].appendChild(VideoSource);
-                //     // // VideoPreviewPlaceholder[0].src = VideoSource.src;
-                //     // VideoPreviewPlaceholder[0].load();
-
-                //     // console.log(VideoPreviewPlaceholder);
-                //     // console.log(VideoSource);
-                //     // // VideoPreviewPlaceholder[0].src = src;
-                // }
             });
         });
 
         /** Updating the description :
          * The point is to hook all those elements to be able to send genericly their data to databases
          * */
-        [...document.querySelectorAll('.editor')]
+        [...document.querySelectorAll('.editable-ajax')]
         // .concat([...document.querySelectorAll('.image-selector')])
         // .concat(document.querySelector("#Categorie"))
         .forEach(Each => {
 
             if (!Each) return;
 
-            // async function SendUpdateArticleField (Event) {
+            Each.addEventListener('change', (Event) => {
+                console.log(Event);
+                // TODO: use the script use for quilljs, as a function so we can reuse it
+            });
 
-            //     let url = "./controller.php";
-
-            //     let form_data = new FormData();
-            //     form_data.append('Intention', 'UpdateArticleField');
-            //     form_data.append('id_video', GetCurrentArticleID());
-            //     form_data.append('Column', Each.getAttribute('name'));
-
-            //     // We either send a file (images), the content of the form value (#Categorie), or the actual editable text content
-            //     const File = Each.files ? Each.files[0] : null;
-            //     form_data.append(Each.getAttribute('name'), File || Each.value || Each.innerHTML );
-
-            //     const Request = await fetch(url, {
-            //         method: "POST",
-            //         mode: "cors",
-            //         cache: "no-cache",
-            //         credentials: "same-origin",
-            //         // It doesnt work with Content-Type, the WebBrowser will assess the content-type
-            //         // headers: { 'Content-Type': 'multipart/form-data' },
-            //         redirect: "follow",
-            //         referrerPolicy: "no-referrer",
-            //         body: form_data
-            //     })
-            //     .then(function (Response) { 
-                    
-            //         UpdateButton.remove();
-            //         UpdateButton.removeEventListener('click', SendUpdateArticleField, true);
-
-            //         return Response.text();
-            //     })
-            //     // .then(function (ResponseText) {
-            //     //     console.log(ResponseText);
-            //     // })
-            //     ;
-
-            //     return true;
-            // }
-
-            // //Hooking up the button to appear below the edited field
             // Each.addEventListener('focus', (Event) => {
-
-            //     Event.target.insertAdjacentElement('afterend', UpdateButton);
-
-            //     UpdateButton.addEventListener('click', SendUpdateArticleField);
-
-            //     UpdateButton.style.display = 'block';
             // });
 
-            // // Hiding the button on blur, but see notes below
             // Each.addEventListener('blur', (Event) => {
-            //     //NOTE: originally thought about removing the button when clicking elsewhere
-            //     //BUT because the button click causes a blur event on the editable element,
-            //     //we cannot remove the button here: otherwise we cripple the async fetch
-            //     //We could simply hide it, but the button would still be there existing,
-            //     // and could be clicked by a (malicious?) script
             //     // setTimeout(()=>{
             //     //     UpdateButton.style.display = 'none';
             //     // }, 3600);

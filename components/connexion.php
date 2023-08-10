@@ -58,7 +58,7 @@
             try {
                 // NOTE: we cannot wrap Column in `` because it could be a regex like '*'
                 // $SQLQueryString = "SELECT `$Column` FROM `$Table` WHERE $ConditionField";
-                $SQLQueryString = "SELECT * FROM `video`.`videos` ORDER BY `date` LIMIT 9";
+                $SQLQueryString = "SELECT * FROM `video`.`videos` WHERE `is_visible` = 1 ORDER BY `date` LIMIT 9";
 
                 $Result = $this->Connection->query($SQLQueryString);
 

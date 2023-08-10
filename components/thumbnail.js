@@ -45,7 +45,13 @@ function CreateCardForVideo(Metadata)
 
                 NewForm.appendChild(DeleteButton);
 
-                // Card.appendChild(NewForm);
+
+                let InputUserId = document.createElement('input');
+                InputUserId.type = 'hidden';
+                InputUserId.setAttribute('name', 'id_video');
+                InputUserId.setAttribute('value', Metadata.VideoId);
+
+                NewForm.appendChild(InputUserId);
             }
     
             let Card = NewForm;

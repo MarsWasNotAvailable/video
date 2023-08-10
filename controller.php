@@ -15,7 +15,7 @@
         // $DatabaseName = "viaje";
         $UsersTableName = "users";
         $CommentsTableName = "commentaire";
-        $ArticleTableName = "video";
+        $ArticleTableName = "videos";
         $Redirection = "index.php";
         $ArticlePageRedirection = './video.php';
         $NotAllowedRedirection = './index.php';
@@ -139,7 +139,7 @@
                     $Success = $NewConnection->delete($ArticleTableName, $UpdateFieldCondition);
 
                     if ($Success) {
-                        header("Location: " . 'gestion.php');
+                        header("Location: " . 'profile.php?id_profile=' . $_POST['id_video']);
                         die();
                     }
                     break;
@@ -161,8 +161,8 @@
 
                     $Comments = array(
                         'contenu' => $_POST['contenu'],
-                        'id_video' => $_POST['id_video'],
-                        'id_user' => $UserID
+                        'fk_video' => $_POST['id_video'],
+                        'fk_user' => $UserID
                     );
 
                     // var_dump($Comments);
@@ -238,8 +238,55 @@
 
                 case 'UploadVideo':
 
-                    var_dump($_POST);
-                    var_dump($_FILES);
+                    if (isset($_FILES) && $_FILES)
+                    {
+                        // var_dump($_FILES);
+                        // var_dump($_POST);
+
+                        $FolderName = './videos/' ;
+
+                        $LocalTempName = $_FILES['video']['tmp_name'];
+                        $DestinationName = $FolderName . $_FILES['video']['name'] ;
+                        var_dump($LocalTempName);
+                        var_dump($DestinationName);
+
+                        if ((file_exists( $FolderName ) && is_dir( $FolderName )) || mkdir($FolderName))
+                        {
+                            if (!file_exists($DestinationName))
+                            {
+                                move_uploaded_file($LocalTempName, $DestinationName);
+                            }
+                        }
+
+                        // We should only store the filename below
+                        $_POST['video'] = $_FILES['video']['name'];
+                    }
+
+                    $Values = array(
+                        'path' => $_POST['video']
+                    );
+
+                    $Condition = array('id_video' => $_POST['id_video']);
+
+                    $Success = $NewConnection->update($ArticleTableName, $Condition, $Values);
+
+                    var_dump($Success);
+
+                    header("Location: " . 'video.php?edit=true&id_video=' .  $_POST['id_video']);
+                    die();
+                    break;
+
+                case 'UpdateVideoDescription':
+
+                    $Values = array(
+                        'resume' => $_POST['resume']
+                    );
+
+                    $Condition = array('id_video' => $_POST['id_video']);
+
+                    $Success = $NewConnection->update($ArticleTableName, $Condition, $Values);
+
+                    die();
 
                     break;
                 case 'UpdateArticleField':
@@ -327,7 +374,7 @@
                         // $_SESSION['CurrentUser'] = $_POST['email'];
                         $_SESSION['CurrentUserName'] = $_POST['name'];
 
-                        header("Location: " . './profile.php');
+                        header("Location: " . './profile.php?id_profile=' . $_POST['id_user']);
                         die();
                     }
 
