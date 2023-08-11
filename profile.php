@@ -91,6 +91,7 @@
             foreach($ProfilesVideo as $Each):
             $Parameters = '{
                 IsEditable : ' . ($IsUserLoggedIn ? 'true' : 'false') . ',
+                UserId : ' . $ProfileKey . ',
                 VideoId : ' . $Each['id_video'] . ',
                 Path : "' . ($Each['path'] ? $Each['path'] : '404.mp4') . '",
                 Titre : "' . $Each['titre'] . '"

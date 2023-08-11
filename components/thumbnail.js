@@ -48,10 +48,17 @@ function CreateCardForVideo(Metadata)
 
                 let InputUserId = document.createElement('input');
                 InputUserId.type = 'hidden';
-                InputUserId.setAttribute('name', 'id_video');
-                InputUserId.setAttribute('value', Metadata.VideoId);
+                InputUserId.setAttribute('name', 'id_user');
+                InputUserId.setAttribute('value', Metadata.UserId);
 
                 NewForm.appendChild(InputUserId);
+
+                let InputVideoId = document.createElement('input');
+                InputVideoId.type = 'hidden';
+                InputVideoId.setAttribute('name', 'id_video');
+                InputVideoId.setAttribute('value', Metadata.VideoId);
+
+                NewForm.appendChild(InputVideoId);
             }
     
             let Card = NewForm;

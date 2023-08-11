@@ -134,12 +134,13 @@
                     break;
 
                 case 'DeleteVideo':
+                    var_dump($_POST);
                     $UpdateFieldCondition = array('id_video' => $_POST['id_video']);
 
                     $Success = $NewConnection->delete($ArticleTableName, $UpdateFieldCondition);
 
                     if ($Success) {
-                        header("Location: " . 'profile.php?id_profile=' . $_POST['id_video']);
+                        header("Location: " . 'profile.php?profile=' . $_POST['id_user']);
                         die();
                     }
                     break;
@@ -370,7 +371,7 @@
                         // $_SESSION['CurrentUser'] = $_POST['email'];
                         $_SESSION['CurrentUserName'] = $_POST['name'];
 
-                        header("Location: " . './profile.php?id_profile=' . $_POST['id_user']);
+                        header("Location: " . './profile.php?profile=' . $_POST['id_user']);
                         die();
                     }
 
