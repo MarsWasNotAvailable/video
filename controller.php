@@ -113,7 +113,7 @@
 
                 case 'CreateVideo':
                     session_start();
-                    /*
+                    /* EXAMPLE:
                         INSERT INTO `videos` (`id_video`, `fk_user`, `titre`, `date`, `path`, `resume`) VALUES
                         (1, 3, 'rapture', '2023-08-09', 'lorem_life.mp4', 'come...'),
                     */
@@ -147,7 +147,6 @@
                 case 'AddComment':
 
                     session_start();
-                    // var_dump($_POST);
 
                     $Values = array(
                         'name' => $_POST['name'],
@@ -157,15 +156,12 @@
                     );
 
                     $UserID = $NewConnection->insert_update($UsersTableName, $Values, array('Key' => 'name', 'Value' => $Values['name']));
-                    // var_dump($UserID);
 
                     $Comments = array(
                         'contenu' => $_POST['contenu'],
                         'fk_video' => $_POST['id_video'],
                         'fk_user' => $UserID
                     );
-
-                    // var_dump($Comments);
 
                     $CommentsID = $NewConnection->insert($CommentsTableName, $Comments);
                     // var_dump($CommentsID);

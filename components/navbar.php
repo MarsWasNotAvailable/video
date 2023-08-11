@@ -7,9 +7,8 @@
         session_start();
     }
 
-    $IsUserLoggedIn = isset($_SESSION['CurrentUser']);
+    $IsAnyUserLoggedIn = isset($_SESSION['CurrentUser']);
     $CanEditArticles = (isset($_SESSION['UserRole']) && CanEditArticles($_SESSION['UserRole']));
-
 ?>
 
 <!-- Because this link element is set as rel stylesheet, it is body-ok
@@ -190,7 +189,7 @@
             </form>
         </div>
 
-        <?php if($IsUserLoggedIn && $CanEditArticles): ?>
+        <?php if($IsAnyUserLoggedIn && $CanEditArticles): ?>
             <div class="dropdown">
                 <a href="./gestion.php">MY PAGE</a>
             </div>
@@ -198,7 +197,7 @@
 
         <div id="SiteHead" class="dropdown">
             <div >
-                <?php if ($IsUserLoggedIn): $UserIcon = './images/icons_user_role_' . $_SESSION['UserRole'] . '.png';
+                <?php if ($IsAnyUserLoggedIn): $UserIcon = './images/icons_user_role_' . $_SESSION['UserRole'] . '.png';
                     ?>
                     <form method="POST" action="controller.php"><input type="submit" name="Intention" value="Logout" class="ConnexionButtons red-button" ></form>
                     <a href="./profile.php?profile=<?php echo $_SESSION['UserID']; ?>"><img src=<?php echo '"' . $UserIcon . '"'; ?> alt="User Role Image" style="width: 32px; height: 32px;"></a>

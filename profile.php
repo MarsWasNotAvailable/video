@@ -37,7 +37,11 @@
 
 <body >
     <header>
-        <?php include_once './components/navbar.php'; ?>
+        <?php include_once './components/navbar.php';
+        
+            // Got some bug here, it IsUserLoggedIn changes to true when it shouldnt
+            // $IsUserLoggedIn = isset($_SESSION['CurrentUser']) && ($ProfileKey == $_SESSION['UserID']);
+        ?>
     </header>
 
     <main class="one-or-two-part">
@@ -53,7 +57,8 @@
             <?php endif; ?>
         </section>
 
-        <?php if ($IsUserLoggedIn):
+        <?php
+            if ($IsUserLoggedIn):
             $UserIcon = './images/icons_user_role_' . $_SESSION['UserRole'] . '.png';
             ?>
             <section class="login-box">
@@ -66,16 +71,6 @@
                         <label for="name">Nom :</label>
                         <input type="text" name="name" value=<?php echo '"' . $_SESSION['CurrentUserName'] . '"'; ?> required >
                     </div>
-
-                    <!-- <div class="input-group">
-                        <label for="email">Adresse e-mail :</label>
-                        <input type="text" name="email" value=<?php echo '"' . $_SESSION['CurrentUser'] . '"'; ?> required >
-                    </div> -->
-
-                    <!-- <div class="input-group">
-                        <label for="mot_de_passe">Mot de passe :</label>
-                        <input type="password" name="mot_de_passe" required>
-                    </div> -->
 
                     <div class="input-group">
                         <!-- <input name="Intention" value="UpdateProfile" type="submit"> -->
@@ -95,7 +90,7 @@
             $ProfilesVideo = $NewConnection->select("videos", "*", "`fk_user` = $ProfileKey");
             foreach($ProfilesVideo as $Each):
             $Parameters = '{
-                IsEditable : true,
+                IsEditable : ' . ($IsUserLoggedIn ? 'true' : 'false') . ',
                 VideoId : ' . $Each['id_video'] . ',
                 Path : "' . ($Each['path'] ? $Each['path'] : '404.mp4') . '",
                 Titre : "' . $Each['titre'] . '"

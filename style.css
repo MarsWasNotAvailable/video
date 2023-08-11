@@ -13,6 +13,10 @@ body {
     background-color: #f0f0f0;
 }
 
+main {
+    min-height: 32em;
+}
+
 
 header {
     display: flex;
@@ -34,11 +38,11 @@ header #HomeLink {
     display: inline-block;
 }
 
-@media (max-width:900px) {
+/* @media (max-width:900px) {
     header #Blazon {
         scale: 2;
     }
-}
+} */
 
 header nav {
     margin-top: 1em;
@@ -217,6 +221,7 @@ article section h2, article section h4 {
     background-color: #fff;
     margin-left: 3.5%;
     margin-bottom: 3%;
+    max-height: 16em;
 }
 
 .card-image {

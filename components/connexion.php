@@ -25,9 +25,6 @@
             }
         }
 
-        //TODO: working through that, I think 'method chaining' would be a perfect interface, as in:
-        //$NewConnection.prepare().delete().fromtable("User").where(array( "email" => "example@local") ).execute();
-
         /**
          * The ConditionField is a filter to isolate a specific result
          * Returns an associative array of the results, or false on error */
@@ -51,6 +48,28 @@
             }
         }
 
+        public function select_video_with_extras($VideoID)
+        {
+            try {
+                $SQLQueryString = "SELECT *
+                FROM `videos`
+                INNER JOIN `users` ON `users`.`id_user` = `videos`.`fk_user`
+                WHERE `videos`.`id_video` = '$VideoID' ;
+                ";
+
+                // var_dump($SQLQueryString);
+
+                $Result = $this->Connection->query($SQLQueryString);
+
+                return $Result->fetchAll(PDO::FETCH_ASSOC);
+
+            } catch (PDOException $e) {
+                echo "Erreur: " . $e->getMessage();
+
+                return false;
+            }
+        }
+
         public function select_recent_videos()
         {
             // $SQLQueryString = 'SELECT * FROM `users` WHERE (`mail` = "superuser@local" AND `password` = "pass")';
@@ -59,132 +78,6 @@
                 // NOTE: we cannot wrap Column in `` because it could be a regex like '*'
                 // $SQLQueryString = "SELECT `$Column` FROM `$Table` WHERE $ConditionField";
                 $SQLQueryString = "SELECT * FROM `video`.`videos` WHERE `is_visible` = 1 ORDER BY `date` LIMIT 9";
-
-                $Result = $this->Connection->query($SQLQueryString);
-
-                return $Result->fetchAll(PDO::FETCH_ASSOC);
-
-            } catch (PDOException $e) {
-                echo "Erreur: " . $e->getMessage();
-
-                return false;
-            }
-        }
-
-        /** Original select was having a entry point at the WHERE clause
-         * I think below can give us more control on the condition field
-         * ConditionField expects a multidimentional array containing an operations and a pair of operands
-         */
-        public function select_safe($Table, $Column, $ConditionField = 1)
-        {
-            try {
-                // $ConditionField = array(
-                //     array("=" => array("id_video" => "1")),
-                //     array("<>" => array("sous_categorie" => "not_that_one")),
-                //     array("LIKE" => array("content" => "%keyword%"))
-                // );
-                $TypeOfCondition = gettype($ConditionField);
-                switch($TypeOfCondition)
-                {
-                    case 'array':
-                    case 'object':
-                        // What a terrible language: so much words for such a simple thing
-                        $ConditionAsString = "";
-                        foreach ($ConditionField as $Index => $EachConditionsPair) {
-                            foreach ($EachConditionsPair as $EachOperation => $EachPair) {
-                                foreach($EachPair as $EachKey => $EachValue) {
-                                    $ConditionAsString .= "(`$Table`.`" . $EachKey . '` ' . $EachOperation . ' "' . $EachValue . '") AND ';
-                                    break; //there should only be one pair per operations
-                                }
-                            }
-                        }
-                        $ConditionField = rtrim($ConditionAsString, ' AND ');
-                        var_dump($ConditionField);
-                        break;
-                    default:
-                    case 'boolean':
-                    case 'integer':
-                    case 'string':
-                    case 'double':
-                        break;
-                    case 'NULL':
-                        $ConditionField = 1;
-                        break;
-                }
-
-                // NOTE: here, we try to support both valid name, and regex expression
-                $Column = (@preg_match($Column, null) === false) ? $Column : ('`' . $Column . '`');
-                // var_dump($Column);
-                $SQLQueryString = "SELECT $Column FROM `$Table` WHERE $ConditionField";
-
-                $Result = $this->Connection->query($SQLQueryString);
-
-                return $Result->fetchAll(PDO::FETCH_ASSOC);
-
-            } catch (PDOException $e) {
-                echo "Erreur: " . $e->getMessage();
-
-                return false;
-            }
-        }
-
-        public function select_full_article_all($Condition = 1)
-        {
-            try {
-                $SQLQueryString = "SELECT *
-                FROM `videos`
-                INNER JOIN `categorie` ON `videos`.`categorie` = `categorie`.`id_categorie`
-                WHERE $Condition ;
-                ";
-
-                // var_dump($SQLQueryString);
-
-                $Result = $this->Connection->query($SQLQueryString);
-
-                return $Result->fetchAll(PDO::FETCH_ASSOC);
-
-            } catch (PDOException $e) {
-                echo "Erreur: " . $e->getMessage();
-
-                return false;
-            }
-        }
-
-        public function select_full_article($ArticleID)
-        {
-            try {
-                $SQLQueryString = "SELECT *
-                FROM `videos`
-                INNER JOIN `categorie` ON `videos`.`categorie` = `categorie`.`id_categorie`
-                WHERE `videos`.`id_video` = '$ArticleID' ;
-                ";
-
-                // var_dump($SQLQueryString);
-
-                $Result = $this->Connection->query($SQLQueryString);
-
-                return $Result->fetchAll(PDO::FETCH_ASSOC);
-
-            } catch (PDOException $e) {
-                echo "Erreur: " . $e->getMessage();
-
-                return false;
-            }
-        }
-
-        //TODO: update the name on database, so we can include more of categorie's fields without conflict
-        /**Returns an associative array of the results, or false on error */
-        public function select_article($ConditionField)
-        {
-            try {
-                $SQLQueryString = "SELECT `videos`.`id_video`,`videos`.`categorie`,`videos`.`sous_categorie`, `videos`.`date`, `videos`.`titre`, `videos`.`resume`, `videos`.`photo_principale`, `categorie`.`nom`
-                FROM `videos`
-                INNER JOIN `categorie` ON `categorie`.`id_categorie` = `videos`.`categorie`
-                WHERE `videos`.`categorie` = $ConditionField ;
-                ";
-
-
-                // var_dump($SQLQueryString);
 
                 $Result = $this->Connection->query($SQLQueryString);
 
